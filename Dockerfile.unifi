@@ -1,0 +1,37 @@
+FROM ubuntu:trusty
+ENV DEBIAN_FRONTEND noninteractive
+
+RUN mkdir -p /usr/lib/unifi/data /backups /logs && \
+    touch /usr/lib/unifi/data/.unifidatadir
+
+# add unifi repo +keys
+RUN \
+	echo "deb http://www.ubnt.com/downloads/unifi/debian unifi5 ubiquiti" >/etc/apt/sources.list.d/ubnt.list && \
+	apt-key adv --keyserver keyserver.ubuntu.com --recv C0A52C50
+
+#try distro mongo first
+#RUN \  
+#  echo "deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen" >/etc/apt/sources.list.d/mongo.list && \
+#  apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10
+
+
+# update then install
+RUN \
+    apt-get update -q -y && \
+    apt-get install -q -y mongodb-server unifi lsof
+
+#add scripts
+COPY ["unifi.sh","backup_unifi.sh","restore_unifi.sh", "/usr/lib/unifi/"]
+RUN echo "10 02 * * * root /usr/lib/unifi/backup_unifi.sh >/logs/backup.log 2>&1" >/etc/cron.d/unifi_backup
+
+#redirect path
+RUN rm -f /usr/lib/unifi/logs && ln -s /logs /usr/lib/unifi/logs
+RUN rm -f /usr/lib/unifi/backups && ln -s /backups /usr/lib/unifi/backups
+
+#define interface
+VOLUME /usr/lib/unifi/data
+VOLUME /backups /logs
+EXPOSE  8443 8880 8080 27117
+WORKDIR /usr/lib/unifi
+ENTRYPOINT /bin/bash
+CMD ["/usr/lib/unifi/unifi.sh", "start"]
