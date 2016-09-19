@@ -7,7 +7,7 @@ this Docker container based on Ubuntu Trusty runs a Ubiquiti Unifi5 Controler. T
 
 ### build
 ```sh
-docker build -t tommi2day/unifi5 -f Dockerfile.unifi .
+docker build -t tommi2day/unifi5 -f Dockerfile.unifi5 .
 ```
 see also build_unifi.sh
 ### exposed Ports
@@ -34,10 +34,10 @@ for the datafiles when launching a new container, e.g:
 docker volume create --name unifi_data
 docker run -d \
   -v unifi_data:/usr/lib/unifi/data  \
-  -v /shared/unifi/backups:/backups \
-  -v /shared/unifi/logs":/logs \
-  --hostname unifi \
-  --name unifi \
+  -v /shared/unifi5/backups:/backups \
+  -v /shared/unifi5/logs":/logs \
+  --hostname unifi5 \
+  --name unifi5 \
   -p 8080:8080 \
   -p 8443:8443 \
   -p 27117:27117 \
