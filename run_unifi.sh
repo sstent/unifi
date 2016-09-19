@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-VERS=5.0
 VMNAME=${2:-unifi}
 CMD=$1
 DOCKER_SHARED=${DOCKER_SHARED:-$(pwd)}
@@ -11,13 +10,7 @@ if [ -z "$DEBUG" ]; then
 else
 	RUN="--rm=true -it --entrypoint bash "
 fi
-#windows
-if [ "$OSTYPE" = "msys" ]; then
-	P=/
-else 
-	S=sudo
-fi
-DOCKER="$S docker"
+DOCKER="docker"
 
 #datadir
 if [ ! -d "${SHARED_DIR}" ]; then
@@ -60,10 +53,10 @@ $DOCKER run $RUN \
 	--hostname $VMNAME \
 	--name ${VMNAME} \
 	-p 8080:8080 \
-  -p 8880:8880 \
+	-p 8880:8880 \
 	-p 8443:8443 \
 	-p 27117:27117 \
-	$DOCKER_USER/$VMNAME:$VERS $1 " >starter
+	$DOCKER_USER/$VMNAME $1 " >starter
 if [ "$OSTYPE" = "msys" ]; then
 	mv starter starter.ps1
 	powershell -File starter.ps1

@@ -6,7 +6,7 @@ this Docker container based on Ubuntu Trusty runs a Ubiquiti Unifi5 Controler. T
 
 ### build
 ```sh
-docker build -t tommi2day/unifi:5.0 -f Dockerfile.unifi .
+docker build -t tommi2day/unifi -f Dockerfile.unifi .
 ```
 see also build_unifi.sh
 ### exposed Ports
@@ -40,7 +40,7 @@ docker run -d \
   -p 8080:8080 \
   -p 8443:8443 \
   -p 27117:27117 \
-  tommi2day/unifi:5.0
+  tommi2day/unifi
 ```
 see run_unifi.sh for an example
 
