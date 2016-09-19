@@ -1,5 +1,5 @@
 #!/bin/bash
-VMNAME=${1:-unifi}
+VMNAME=${1:-unifi5}
 if [ -r Dockerfile.$VMNAME ]; then
 DOCKER_USER=${DOCKER_USER:-tommi2day}
 #build the container

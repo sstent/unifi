@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VMNAME=${2:-unifi}
+VMNAME=${2:-unifi5}
 CMD=$1
 DOCKER_SHARED=${DOCKER_SHARED:-$(pwd)}
 DOCKER_USER=${DOCKER_USER:-tommi2day}

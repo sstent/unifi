@@ -1,12 +1,13 @@
-# unifi
-Docker container for Ubiquiti Unifi Controler
+# unifi5
+Docker container for Ubiquiti Unifi5 Controler
 
 this Docker container based on Ubuntu Trusty runs a Ubiquiti Unifi5 Controler. The Controler is a java app on top of MongoDB
 
+[![Docker Pulls](https://img.shields.io/docker/pulls/tommi2day/unifi5.svg)](https://hub.docker.com/r/tommi2day/unifi5/)
 
 ### build
 ```sh
-docker build -t tommi2day/unifi -f Dockerfile.unifi .
+docker build -t tommi2day/unifi5 -f Dockerfile.unifi .
 ```
 see also build_unifi.sh
 ### exposed Ports
@@ -40,7 +41,7 @@ docker run -d \
   -p 8080:8080 \
   -p 8443:8443 \
   -p 27117:27117 \
-  tommi2day/unifi
+  tommi2day/unifi5
 ```
 see run_unifi.sh for an example
 
