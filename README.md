@@ -47,13 +47,36 @@ see run_unifi.sh for an example
 
 ### Addons
 All Addons are in /usr/lib/unifi
-####start/stop
+####internal start/stop script
 unifi.sh is a start/stop/status script. the start script calls finally a tail -f server.log to keep the container running
-####Backup
+####Backup script
 There is a cronjob in place calling backup_unifi.sh , which will trigger a logrotate for mongodb and afterwards
-stop the Controler to tar the unifi data tree to /backups and restart finally
-####Restore
+stop the Controler to tar the unifi data tree to /backups and restart finally. 
+You can start it manually as well.
+```
+docker exec -ti unifi5 bash
+./backup_unifi.sh
+exit
+```
+To return to the console prompt press CTRL-C
+
+####Restore script
 for restoring a backup call/exec restore_unifi.sh [filename]. filename will be expected in /backups. Without filename the last backup
-unifi_data.$(date '+%Y%m%d').tar.gz is assumed as default
+unifi_data.$(date '+%Y%m%d').tar.gz is assumed as default. 
+Sample for the running container:
+```
+docker exec -ti unifi5 bash
+./restore_unifi.sh /backups/unifi-backup.tar.gz
+exit
+```
+This will stop and restart the unifi process. To return to the console prompt press CTRL-C
+####Systemd service definition
+unifi.service is a sample systemd start script for the already created container.
+```
+sudo cp unifi.service /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable unifi.service
+sudo systemctl start unifi.service
+```
  
 see https://help.ubnt.com/hc/en-us/articles/220066768-UniFi-Debian-Ubuntu-APT-howto
