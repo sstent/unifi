@@ -2,20 +2,21 @@
 # description: Start Unify server
 # chkconfig: 2345 99 01
 
+#MEMORY="-Xmx256M"
 UNIFI=/usr/lib/unifi
 if [ ! -d $UNIFI ]; then
-	echo "Unifi not installed in $UNIFI"
-	exit 1
+        echo "Unifi not installed in $UNIFI"
+        exit 1
 fi
 cd $UNIFI
 case "$1" in
 
         start)
 
-								if [ ! -d logs ]; then
-									mkdir logs
-								fi
-                nohup java -Xmx256M -jar lib/ace.jar start >logs/unifi.log 2>&1 &
+                if [ ! -d logs ]; then
+                    mkdir logs
+                fi
+                nohup java -Djava.net.preferIPv4Stack=true $MEMORY -jar lib/ace.jar start >logs/unifi.log 2>&1 &
                 sleep 5
                 ./$0 status
                 tail -f logs/server.log

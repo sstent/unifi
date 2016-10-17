@@ -20,9 +20,9 @@ fi
 RUNNING=$($DOCKER inspect --format="{{ .State.Running }}" $VMNAME 2> /dev/null)
 if [ $? -eq 0 ]; then
 	if [ "$RUNNING" == "true" ]; then
-		$DOCKER stop $VMNAME
+		$DOCKER stop $VMNAME >/dev/null 2>&1
 	fi
-	$DOCKER rm $VMNAME
+	$DOCKER rm $VMNAME >/dev/null 2>&1
 fi
 
 if [ "$DEBUG" = "clean" ]; then
@@ -31,32 +31,40 @@ if [ "$DEBUG" = "clean" ]; then
 	$DOCKER volume rm  ${VMNAME}_data >/dev/null 2>&1
 fi
 
-#check data volume and create a new one if needed
-DATA=$($DOCKER docker inspect --format '{{ .Mountpoint }}' ${VMNAME}_data 2> /dev/null)
-if [ $? -ne 0 ]; then
-	docker volume create --name ${VMNAME}_data
-fi
-
 #prepare shared dir
-for d in backups logs ; do
+for d in backups logs data; do
 	if [ ! -d $SHARED_DIR/$d ]; then
-			mkdir -p $SHARED_DIR/$d
+		mkdir -p $SHARED_DIR/$d
 	fi
 done
+
+
+#check data volume and create a new one if needed
+if [ "OSTYPE" = "msys" ]; then
+	#on windows use a volume
+	DATA=$($DOCKER docker inspect --format '{{ .Mountpoint }}' ${VMNAME}_data 2> /dev/null)
+	if [ $? -ne 0 ]; then
+		docker volume create --name ${VMNAME}_data --driver=local --
+	fi
+	DATA="${VMNAME}_data"
+else
+	DATA="${SHARED_DIR}/data"
+fi
+
 
 #run it
 echo "	
 $DOCKER run $RUN \
-  -v ${VMNAME}_data:/usr/lib/unifi/data  \
+  -v $DATA:/usr/lib/unifi/data  \
   -v "${SHARED_DIR}/backups":/backups \
   -v "${SHARED_DIR}/logs":/logs \
-	--hostname $VMNAME \
-	--name ${VMNAME} \
-	-p 8080:8080 \
-	-p 8880:8880 \
-	-p 8443:8443 \
-	-p 27117:27117 \
-	$DOCKER_USER/$VMNAME $1 " >starter
+  --hostname $VMNAME \
+  --name ${VMNAME} \
+  -p :8080:8080 \
+  -p 8880:8880 \
+  -p 8443:8443 \
+  -p 37117:27117 \
+  $DOCKER_USER/$VMNAME $1 " >starter
 if [ "$OSTYPE" = "msys" ]; then
 	mv starter starter.ps1
 	powershell -File starter.ps1
