@@ -1,0 +1,12 @@
+[Unit]
+Description=Unifi Controler container
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=always
+ExecStart=/usr/bin/docker start -a unifi5
+ExecStop=/usr/bin/docker stop -t 2 unifi5
+
+[Install]
+WantedBy=default.target
