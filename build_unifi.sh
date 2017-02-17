@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION=5.2.9
+VERSION=5.4.11
 VMNAME=${1:-unifi5}
 if [ -r Dockerfile.$VMNAME ]; then
 	DOCKER_USER=${DOCKER_USER:-tommi2day}
