@@ -22,7 +22,7 @@ RUN rm -f /usr/lib/unifi/backups && ln -s /backups /usr/lib/unifi/backups
 #define interface
 VOLUME /usr/lib/unifi/data
 VOLUME /backups /logs
-EXPOSE  8443 8880 8080 27117
+EXPOSE  8443 8880 8080
 
 #Runtime Env
 ENV PATH "$PATH:/usr/lib/unifi"

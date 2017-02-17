@@ -60,10 +60,10 @@ $DOCKER run $RUN \
   -v "${SHARED_DIR}/logs":/logs \
   --hostname $VMNAME \
   --name ${VMNAME} \
+  --restart=always \
   -p :8080:8080 \
   -p 8880:8880 \
   -p 8443:8443 \
-  -p 37117:27117 \
   $DOCKER_USER/$VMNAME $1 " >starter
 if [ "$OSTYPE" = "msys" ]; then
 	mv starter starter.ps1

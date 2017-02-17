@@ -13,7 +13,7 @@ see also build_unifi.sh
 ### exposed Ports
 ```sh
 # WebUI Inform mongodb  
-EXPOSE  8443 8080 27117
+EXPOSE  8443 8080 8880
 ```
 ### Volumes
 ```sh
@@ -38,9 +38,10 @@ docker run -d \
   -v /shared/unifi5/logs":/logs \
   --hostname unifi5 \
   --name unifi5 \
+  --restart=always \
   -p 8080:8080 \
+  -p 8880:8880 \
   -p 8443:8443 \
-  -p 27117:27117 \
   tommi2day/unifi5
 ```
 see run_unifi.sh for an example
