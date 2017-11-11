@@ -16,6 +16,7 @@ case "$1" in
                 if [ ! -d logs ]; then
                     mkdir logs
                 fi
+				service anacron start
                 nohup java -Djava.net.preferIPv4Stack=true $MEMORY -jar lib/ace.jar start >logs/unifi.log 2>&1 &
                 sleep 5
                 ./$0 status
