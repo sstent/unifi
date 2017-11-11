@@ -64,6 +64,8 @@ $DOCKER run $RUN \
   -p :8080:8080 \
   -p 8880:8880 \
   -p 8443:8443 \
+  -p 3478:3478/udp \
+  -p 27117:27117 \
   $DOCKER_USER/$VMNAME $1 " >starter
 if [ "$OSTYPE" = "msys" ]; then
 	mv starter starter.ps1

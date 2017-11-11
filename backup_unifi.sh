@@ -7,7 +7,7 @@ if [ -n "$MONGOPID" ]; then
 	kill -SIGUSR1 $MONGOPID
 fi 
 #backup
-cd /usr/lib/unifi1
+cd /usr/lib/unifi
 bash ./unifi.sh stop
 sleep 5
 tar -czf backups/unifi_data.$(date '+%Y%m%d').tar.gz data >/dev/null
