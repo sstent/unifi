@@ -1,6 +1,6 @@
 #!/bin/bash
-VERSION=5.8.23
-REPO=unifi-5.8
+VERSION=5.10.12
+REPO=unifi-5.10
 #REPO=stable
 VMNAME=${1:-unifi5}
 if [ -r Dockerfile.$VMNAME ]; then
