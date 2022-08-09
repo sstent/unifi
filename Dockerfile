@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 ENV DEBIAN_FRONTEND noninteractive
 
 ARG REPO
@@ -19,17 +19,18 @@ RUN \
     mongodb-server \
     openjdk-8-jre-headless \
     wget && \
-  echo "**** install unifi ****" && \
+    echo "**** cleanup ****" && \
+    apt-get clean && \
+    rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
+  
+RUN echo "**** install unifi ****" && \
   mkdir -p /app && \ 
   curl -o \
   /app/unifi.deb -L \
     "https://dl.ui.com/unifi/5.6.42/unifi_sysvinit_all.deb" && \ 
   echo "**** cleanup ****" && \
   apt-get clean && \
-  rm -rf \
-    /tmp/* \
-    /var/lib/apt/lists/* \
-    /var/tmp/*
+  rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
 
 
 #add scripts
