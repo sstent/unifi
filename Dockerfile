@@ -15,7 +15,7 @@ RUN deb http://www.ui.com/downloads/unifi/debian unifi-5.6 ubiquiti && \
 	echo "deb http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.4 multiverse" >/etc/apt/sources.list.d/mongodb-org-3.4.list
 
 # update then install
-COPY ["unifi_sysvinit_all.deb"]
+# COPY ["unifi_sysvinit_all.deb"]
 RUN apt-get update -q -y && \
     # apt install -y ./unifi_sysvinit_all.deb
     apt-get install -y unifi 
