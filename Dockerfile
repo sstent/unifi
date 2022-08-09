@@ -8,15 +8,17 @@ RUN mkdir -p /usr/lib/unifi/data /backups /logs
 RUN apt-get -q update && apt-get -y upgrade && \
 	apt-get install -y -q lsof anacron vim net-tools less gnupg2 apt-transport-https ca-certificates
 # add unifi repo +keys
-RUN if [ -z "$REPO" ]; then REPO="stable"; fi && \
-    echo "deb http://www.ubnt.com/downloads/unifi/debian $REPO ubiquiti" >/etc/apt/sources.list.d/ubnt.list && \
-    apt-key adv --keyserver keyserver.ubuntu.com --recv C0A52C50 && \
-	apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6 && \
-	echo "deb http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.4 multiverse" >/etc/apt/sources.list.d/mongodb-org-3.4.list
+# RUN if [ -z "$REPO" ]; then REPO="stable"; fi && \
+#     echo "deb http://www.ubnt.com/downloads/unifi/debian $REPO ubiquiti" >/etc/apt/sources.list.d/ubnt.list && \
+#     apt-key adv --keyserver keyserver.ubuntu.com --recv C0A52C50 && \
+# 	apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6 && \
+# 	echo "deb http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.4 multiverse" >/etc/apt/sources.list.d/mongodb-org-3.4.list
 
 # update then install
+COPY ["unifi_sysvinit_all.deb"]
 RUN apt-get update -q -y && \
-    apt-get install -q -y unifi 
+    apt install -y ./unifi_sysvinit_all.deb
+    # apt-get install -q -y unifi 
 
 #add scripts
 COPY ["unifi.sh","backup_unifi.sh","restore_unifi.sh", "/usr/lib/unifi/"]
